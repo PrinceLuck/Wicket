@@ -19,7 +19,7 @@ Accordingly:
 
 ## Documentation ##
 
-Read the documentation [here](http://arthur-e.github.io/Wicket/doc/out/). Documentation can be generated with [JSDoc 3](https://github.com/jsdoc3/jsdoc). I'm not a JSDoc 3 expert; feel free to revise the tags.
+Read the documentation [here](http://arthur-e.github.io/Wicket/doc/out/). Documentation can be generated with [JSDoc 3](https://github.com/jsdoc3/jsdoc).
 
     git clone git://github.com/jsdoc3/jsdoc.git
     ./jsdoc /var/www/static/wicket/wicket.src.js
@@ -29,7 +29,7 @@ Or, with Node installed:
     sudo npm install -g git://github.com/jsdoc3/jsdoc.git
     jsdoc /var/www/static/wicket/wicket.src.js
 
-Either way, make sure you invoke `jsdoc` from a directory you can write to; it will output documentation to your current working directory.
+Either way, make sure you invoke `jsdoc` from a directory in which you have write access; it will output documentation to your current working directory.
 
 ## Build Information ##
 

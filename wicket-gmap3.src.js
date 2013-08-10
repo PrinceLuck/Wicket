@@ -127,12 +127,13 @@ Wkt.Wkt.prototype.construct = {
     /**
      * Creates the framework's equivalent polygon geometry object.
      * @param   config      {Object}    An optional properties hash the object should use
+     * @param   component   {Object}    An optional component to build from
      * @return              {google.maps.Polygon}
      */
-    polygon: function (config) {
+    polygon: function (config, component) {
         var j, k, c, rings, verts;
 
-        c = this.components;
+        c = component || this.components;
 
         config = config || {
             editable: false // Editable geometry off by default
@@ -173,40 +174,23 @@ Wkt.Wkt.prototype.construct = {
      * @return          {Array}     Array containing multiple google.maps.Polygon
      */
     multipolygon: function (config) {
-        var i, j, k, c, rings, verts;
+        var i, c, arr;
 
         c = this.components;
 
         config = config || {
-            editable: false // Editable geometry off by default
+            editable: false
         };
 
-        config.paths = []; // Must ensure this property is available
+        config.path = [];
 
-        for (i = 0; i < c.length; i += 1) { // For each polygon...
+        arr = [];
 
-            rings = [];
-            for (j = 0; j < c[i].length; j += 1) { // For each ring...
+        for (i = 0; i < c.length; i += 1) {
+            arr.push(this.construct.polygon(config, c[i]));
+        }
 
-                verts = [];
-                for (k = 0; k < c[i][j].length; k += 1) { // For each vertex...
-                    verts.push(new google.maps.LatLng(c[i][j][k].y, c[i][j][k].x));
-
-                } // eo for each vertex
-
-/*              // This is apparently not needed in multipolygon cases
-                if (j !== 0) { // Reverse the order of coordinates in inner rings
-                    verts.reverse();
-                }
-*/
-                rings.push(verts);
-            } // eo for each ring
-
-            config.paths = config.paths.concat(rings);
-
-        } // eo for each polygon
-
-        return new google.maps.Polygon(config);
+        return arr;
     }
 
 };
@@ -260,7 +244,6 @@ Wkt.Wkt.prototype.deconstruct = function (obj) {
 
     // google.maps.Polygon /////////////////////////////////////////////////////
     if (obj.constructor === google.maps.Polygon) {
-
         rings = [];
         multiFlag = (function () {
             var areas, i, l;
