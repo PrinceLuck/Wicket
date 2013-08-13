@@ -97,6 +97,7 @@ var Wkt = (function () { // Execute function immediately
          * @property            {Array}     components      - Holder for atomic geometry objects (internal representation of geometric components)
          * @property            {String}    delimiter       - The default delimiter for separating components of atomic geometry (coordinates)
          * @property            {Object}    regExes         - Some regular expressions copied from OpenLayers.Format.WKT.js
+         * @property            {String}    type            - The Well-Known Text name (e.g. 'point') of the geometry
          * @property            {Boolean}   wrapVerticies   - True to wrap vertices in MULTIPOINT geometries; If true: MULTIPOINT((30 10),(10 30),(40 40)); If false: MULTIPOINT(30 10,10 30,40 40)
          * @return              {Wkt.Wkt}
          * @memberof Wkt
@@ -142,9 +143,9 @@ var Wkt = (function () { // Execute function immediately
             // An initial WKT string may be provided
             if (initializer && typeof initializer === 'string') {
                 this.read(initializer);
-            } else if (this.fromGeometry) { // Or, an initial geometry object to be read
-                this.fromGeometry(initializer);
-            }
+            } else if (initializer && typeof initializer !== undefined) {
+                this.fromObject(initializer);
+            } 
 
         }
 
