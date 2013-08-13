@@ -145,7 +145,8 @@ Wkt.Wkt.prototype.construct = {
         for (j = 0; j < c.length; j += 1) { // For each ring...
 
             verts = [];
-            for (k = 0; k < c[j].length; k += 1) { // For each vertex...
+            // NOTE: We iterate to one (1) less than the Array length to skip the last vertex
+            for (k = 0; k < c[j].length - 1; k += 1) { // For each vertex...
                 verts.push(new google.maps.LatLng(c[j][k].y, c[j][k].x));
 
             } // eo for each vertex
@@ -254,7 +255,14 @@ Wkt.Wkt.prototype.deconstruct = function (obj) {
                 });
             }
 
-            if (!tmp.getAt(tmp.length - 1).equals(tmp.getAt(0))) {
+            if (i !== 0) { // Reverse the order of coordinates in inner rings
+                verts.reverse();
+                verts.push({ // Add the first coordinate (now at the end, in inner rings) again for closure
+                    x: tmp.getAt(tmp.length - 1).lng(),
+                    y: tmp.getAt(tmp.length - 1).lat()
+                });
+
+            } else {
                 verts.push({ // Add the first coordinate again for closure
                     x: tmp.getAt(0).lng(),
                     y: tmp.getAt(0).lat()
